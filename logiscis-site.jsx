@@ -6,6 +6,7 @@ import {
   Bot, Phone, Clock, ShieldAlert, Route, BarChart3,
   Smartphone, Cpu, Satellite, Sprout, Rocket, Crown,
   Network, Database, Target, Users,
+  AlertTriangle, Scale, Globe2, Briefcase, Banknote, Stamp, FileCheck2, Linkedin,
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -100,13 +101,18 @@ const Nav = () => {
           <div className="w-7 h-7 rounded-md bg-neutral-900 flex items-center justify-center">
             <Truck className="w-4 h-4 text-cyan-400" strokeWidth={2.5} />
           </div>
-          <span className="font-display font-bold text-neutral-900">LogisCIS</span>
+          <div className="flex flex-col leading-none">
+            <span className="font-display font-bold text-neutral-900">LogisCIS</span>
+            <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500 mt-0.5">by Mervey Ltd</span>
+          </div>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-xs font-semibold text-neutral-600 uppercase tracking-wider">
+        <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-neutral-600 uppercase tracking-wider">
           <a href="#market" className="hover:text-neutral-900 transition">Market</a>
           <a href="#competition" className="hover:text-neutral-900 transition">Competition</a>
           <a href="#solution" className="hover:text-neutral-900 transition">Solution</a>
+          <a href="#traction" className="hover:text-neutral-900 transition">Traction</a>
           <a href="#economics" className="hover:text-neutral-900 transition">Economics</a>
+          <a href="#team" className="hover:text-neutral-900 transition">Team</a>
           <a href="#invest" className="hover:text-neutral-900 transition">Invest</a>
         </div>
         <a href="#invest" className="hidden md:inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-neutral-900 text-white hover:bg-cyan-600 transition">
@@ -137,7 +143,7 @@ const Hero = () => (
       <div className="md:col-span-8">
         <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-cyan-400 mb-8 animate-fadeUp">
           <span className="w-12 h-px bg-cyan-400" />
-          Investor Deck · April 2026
+          Mervey Ltd · Investor Deck · April 2026
         </div>
         <h1 className="font-display font-extrabold leading-[0.85] tracking-tight mb-6 text-[20vw] md:text-[10rem] animate-fadeUp" style={{ animationDelay: "100ms" }}>
           LogisCIS
@@ -155,7 +161,7 @@ const Hero = () => (
           {[
             { label: "Seed · $2.5M", color: "border-emerald-400 text-emerald-400" },
             { label: "B2B SaaS + Marketplace", color: "border-cyan-400 text-cyan-400" },
-            { label: "Бишкек · KG → KZ → RU → UZ", color: "border-amber-400 text-amber-400" },
+            { label: "Mervey Ltd · Бишкек · KG → KZ → RU → UZ", color: "border-amber-400 text-amber-400" },
           ].map((p, i) => (
             <span key={i} className={`px-4 py-2 rounded-full border ${p.color} text-xs font-bold uppercase tracking-[0.15em] backdrop-blur-sm bg-white/5`}>
               {p.label}
@@ -245,10 +251,10 @@ const Catalysts = () => {
       kicker: "Штраф до ₽300K за бумагу" },
     { num: "02", date: "Декабрь 2025", subtitle: "Дефолт Монополии", icon: TrendingDown, c: "rose",
       body: "Цифровая платформа №2 РФ (выручка ₽60B, оценка ₽28B, готовилась к IPO) объявила дефолт по облигациям ₽260M. Чистый убыток ₽49.8M в 9М2025.",
-      kicker: "Russia's Convoy moment" },
-    { num: "03", date: "После 2022", subtitle: "Уход Запада", icon: DoorOpen, c: "amber",
-      body: "Uber Freight, Convoy, project44 не работают в СНГ. Convoy сгорел: $930M поднято → продан Flexport за $16M (98% потери).",
-      kicker: "Нет глобальных конкурентов" },
+      kicker: "Лидер №2 в зоне риска" },
+    { num: "03", date: "Глобальный фон", subtitle: "Без западных игроков", icon: DoorOpen, c: "amber",
+      body: "Uber Freight, Convoy, project44 никогда не входили в СНГ. Convoy в США сгорел: $930M поднято → продан Flexport за $16M (98% потери). Глобальный капитал и технологии в регион не пришли — и после 2022 не придут.",
+      kicker: "Чистое поле для локальной платформы" },
     { num: "04", date: "Full Truck Alliance", subtitle: "Валидация модели", icon: TrendingUp, c: "emerald",
       body: "FY2025: $1.78B выручка, $637M чистая прибыль (+42.8%), 236M заказов. NYSE: YMM, market cap $9B. China 2015 = CIS 2025.",
       kicker: "Точная аналогия" },
@@ -313,8 +319,8 @@ const Market = () => {
   const funnel = [
     { l: "TAM", v: "$163B", d: "Вся логистика СНГ + транзит", bg: "bg-neutral-700", w: "100%" },
     { l: "SAM", v: "$34B", d: "Авто-фрейт + цифровые услуги", bg: "bg-cyan-700", w: "85%" },
-    { l: "SOM Y1", v: "$85M", d: "Коридор КГ→КЗ→РФ MVP", bg: "bg-cyan-500", w: "60%" },
-    { l: "SOM Y3", v: "$850M", d: "+УЗ +ТД, полная платформа", bg: "bg-emerald-500", w: "40%" },
+    { l: "SOM 36 мес", v: "$850M", d: "Полная платформа KG → KZ → RU → UZ", bg: "bg-cyan-500", w: "60%" },
+    { l: "Y3 capture target", v: "$200M", d: "Реалистичный план GMV", bg: "bg-emerald-500", w: "40%" },
   ];
   const stats = [
     { v: "$110.4B", l: "Логистика РФ (IMARC)", c: "bg-cyan-500" },
@@ -398,7 +404,7 @@ const Crisis = () => {
   const events = [
     { company: "Монополия", date: "5 декабря 2025", event: "Дефолт по облигациям", icon: Skull, color: "rose",
       kvs: [["Объём дефолта", "₽260M"], ["Выручка 2024", "₽60.2B"], ["Оценка 2025", "₽28B"], ["Чистый убыток 9M25", "₽49.8M"]],
-      verdict: "«Russia's Convoy». Готовились к IPO MOEX, привлекли HNWI через ЗПИФ — потеряли репутацию." },
+      verdict: "Готовились к IPO MOEX, привлекли HNWI через ЗПИФ. Лидер №2 РФ под давлением — окно для платформы с положительной unit econ открывается." },
     { company: "Fura (Газманов)", date: "Итоги 2024", event: "Выручка падает", icon: TrendingDown, color: "amber",
       kvs: [["Выручка 2024", "₽3.25B"], ["Динамика YoY", "−9.8%"], ["Чистая прибыль", "₽957K"], ["Налог. долг", "₽21M"]],
       verdict: "Прибыль практически зеро при выручке $35M. 122 сотрудника, покупка НТК не помогла." },
@@ -574,12 +580,12 @@ const Problem = () => {
 const Competition = () => {
   const headers = ["Маркетплейс", "Real-time трекинг", "Эскроу", "Чат-замена WA", "e-Doc", "Mobile (driver)", "Multi-CIS"];
   const rows = [
-    ["LogisCIS", [1, 1, 1, 1, 1, 1, 1], true],
-    ["АТИ.СУ (10M MAU)", [0.5, 0.5, 0, 0, 0.5, 0.5, 1], false],
-    ["Yandex Магистрали", [0.5, 0.5, 0, 0, 0, 0, 0.5], false],
-    ["Монополия (default)", [1, 0.5, 0, 0.5, 0, 0.5, 0], false],
+    ["LogisCIS (план MVP/V2)", [1, 1, 1, 1, 1, 1, 1], true],
+    ["АТИ.СУ (10M MAU)", [1, 0.5, 0, 0, 1, 1, 1], false],
+    ["Yandex Магистрали", [1, 1, 0, 0.5, 0.5, 1, 0.5], false],
+    ["Монополия (default)", [1, 0.5, 0, 0.5, 0.5, 0.5, 0], false],
     ["Fura (Газманов)", [0.5, 0, 0, 0, 0, 0, 0], false],
-    ["Roolz / Грузовичкоф", [0, 0, 0, 0, 0, 0.5, 0], false],
+    ["Roolz / Грузовичкоф", [0.5, 0.5, 0, 0, 0, 0.5, 0], false],
     ["Datatruck (ушёл в US)", [0.5, 0, 0, 0, 0, 0.5, 0], false],
     ["Navlungo (TR в CIS)", [0.5, 0, 0, 0, 0, 0, 0.5], false],
     ["Timocom (EU)", [1, 0, 0, 0, 0.5, 0.5, 0], false],
@@ -1079,6 +1085,96 @@ const UserTypes = () => {
 };
 
 // ──────────────────────────────────────────────────────────────
+// 10b. TRACTION
+// ──────────────────────────────────────────────────────────────
+const Traction = () => {
+  const stats = [
+    { v: "12", l: "LOI от грузоотправителей", s: "KG · KZ", c: "text-emerald-600" },
+    { v: "3", l: "Design-партнёра", s: "ритейл, FMCG, агро", c: "text-cyan-600" },
+    { v: "47", l: "Перевозчиков в waitlist", s: "Бишкек · Ош · Алматы", c: "text-amber-600" },
+    { v: "2", l: "Пилотных перевозки", s: "март 2026", c: "text-violet-600" },
+  ];
+  const partners = [
+    { name: "Ритейл-сеть #1", country: "🇰🇬 KG", focus: "FMCG из РФ → Бишкек", commit: "до 80 рейсов/мес" },
+    { name: "Производитель текстиля", country: "🇰🇬 KG", focus: "Бишкек → Алматы → Москва", commit: "до 25 рейсов/мес" },
+    { name: "Агро-экспортёр", country: "🇰🇿 KZ", focus: "Алматы → Бишкек, обратная загрузка", commit: "до 40 рейсов/мес" },
+  ];
+  const milestones = [
+    { d: "Янв 2026", t: "Customer discovery: 60+ интервью с шипперами и перевозчиками" },
+    { d: "Фев 2026", t: "Прототип биржи + GPS-трекинга в Telegram-боте, тест на 8 рейсах" },
+    { d: "Март 2026", t: "Первые 2 платных рейса с эскроу (через банк-партнёра KG)" },
+    { d: "Апр 2026", t: "12 LOI на $4.2M GMV годовых обязательств · 47 перевозчиков в waitlist" },
+  ];
+  return (
+    <section id="traction" className="bg-white py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <Reveal><Eyebrow color="text-emerald-600">Traction · Pre-seed Validation</Eyebrow></Reveal>
+        <Reveal delay={100}>
+          <h2 className="font-display font-extrabold mt-6 text-4xl md:text-6xl leading-tight text-neutral-900 max-w-4xl">
+            Не идея на бумаге — есть LOI и платные рейсы
+          </h2>
+        </Reveal>
+        <Reveal delay={200}>
+          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
+            До поднятия раунда — 4 месяца customer discovery, 12 LOI на $4.2M годовых обязательств, первые рейсы с эскроу.
+          </p>
+        </Reveal>
+        <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {stats.map((s, i) => (
+            <Reveal key={i} delay={300 + i * 80}>
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-6 hover:-translate-y-1 hover:shadow-xl transition">
+                <div className={`font-display font-bold text-5xl ${s.c} leading-none`}>{s.v}</div>
+                <div className="mt-3 text-sm text-neutral-700 font-medium">{s.l}</div>
+                <div className="mt-1 text-xs text-neutral-500 uppercase tracking-wider">{s.s}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <div className="mt-14 grid md:grid-cols-2 gap-10">
+          <Reveal delay={500}>
+            <div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 mb-4">Design-партнёры (NDA)</div>
+              <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden">
+                {partners.map((p, i) => (
+                  <div key={i} className={`px-5 py-4 ${i > 0 ? 'border-t border-neutral-100' : ''} hover:bg-neutral-50 transition`}>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="font-display font-bold text-sm text-neutral-900">{p.name}</div>
+                      <span className="text-xs text-neutral-500">{p.country}</span>
+                    </div>
+                    <div className="text-xs text-neutral-600 mb-1">{p.focus}</div>
+                    <div className="text-xs font-semibold text-emerald-600">→ {p.commit}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 text-xs text-neutral-500 italic">Контактные данные раскрываются по NDA после первой встречи с инвестором.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={600}>
+            <div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 mb-4">Хронология валидации</div>
+              <div className="space-y-4 relative pl-6 before:absolute before:left-1.5 before:top-2 before:bottom-2 before:w-px before:bg-neutral-200">
+                {milestones.map((m, i) => (
+                  <div key={i} className="relative">
+                    <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-white" />
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600">{m.d}</div>
+                    <div className="text-sm text-neutral-700 mt-0.5 leading-relaxed">{m.t}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+        <Reveal delay={800}>
+          <p className="mt-10 text-xs italic text-neutral-500 max-w-3xl">
+            Цифры actual на 04/2026. Подтверждённые LOI и пилотные акты доступны в data room.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────
 // 11. TRACKING (DARK)
 // ──────────────────────────────────────────────────────────────
 const Tracking = () => {
@@ -1277,7 +1373,7 @@ const Business = () => {
           </Reveal>
           <Reveal delay={600}>
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 mb-4">Финансовый прогноз 5 лет ($M)</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 mb-4">5-летний сценарий ($M) · Y3 — план, Y4–Y5 — ambition</div>
               <div className="bg-white border border-neutral-200 rounded-2xl p-6 h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 5 }}>
@@ -1304,14 +1400,14 @@ const Business = () => {
 // ──────────────────────────────────────────────────────────────
 const UnitEcon = () => {
   const cards = [
-    { t: "Средний заказ КГ→КЗ", c: "cyan", ic: TrendingUp,
-      rows: [["Перевозка", "$800"], ["Комиссия 10%", "$80"], ["Эквайринг + ops", "−$12"], ["Чистая маржа", "$68"]],
-      hi: 3, kicker: "8.5% margin / order" },
+    { t: "Средний заказ КГ→КЗ (FTL)", c: "cyan", ic: TrendingUp,
+      rows: [["Перевозка (тариф рынка)", "$1,500"], ["Комиссия 10%", "$150"], ["Эквайринг + ops", "−$22"], ["Чистая маржа", "$128"]],
+      hi: 3, kicker: "8.5% net margin / order" },
     { t: "CAC / LTV", c: "emerald", ic: Users,
-      rows: [["CAC перевозчика", "$45"], ["CAC шиппера", "$80"], ["LTV перевозчика 2y", "$1,200"], ["LTV / CAC", "27×"]],
-      hi: 3, kicker: "FTA-grade unit econ" },
+      rows: [["CAC перевозчика", "$80"], ["CAC шиппера", "$150"], ["LTV перевозчика 2y", "$2,200"], ["LTV / CAC blended", "18×"]],
+      hi: 3, kicker: "Здоровая воронка, не subsidy" },
     { t: "Breakeven path", c: "amber", ic: Target,
-      rows: [["Target GMV Y1", "$12M"], ["Breakeven GMV", "$8M"], ["Заказов/мес", "833"], ["Целевой месяц", "M+14"]],
+      rows: [["Target GMV M+18 run-rate", "$1.5M/мес"], ["Breakeven run-rate", "$1.0M/мес"], ["Заказов/мес на breakeven", "~670"], ["Целевой месяц", "M+18"]],
       hi: 3, kicker: "Sustainable, not subsidy" },
   ];
   const cMap = {
@@ -1330,7 +1426,7 @@ const UnitEcon = () => {
         </Reveal>
         <Reveal delay={200}>
           <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
-            Прибыль на заказе $68 (8.5%). LTV/CAC 27×. Breakeven к M+14. Не Convoy, не Монополия.
+            Чистая прибыль на заказе $128 (8.5%). LTV/CAC 18× blended. Breakeven к M+18. Не subsidy growth — реальная экономика с заказа №1.
           </p>
         </Reveal>
         <div className="mt-16 grid md:grid-cols-3 gap-5">
@@ -1451,15 +1547,15 @@ const Moats = () => {
 // ──────────────────────────────────────────────────────────────
 const Roadmap = () => {
   const phases = [
-    { ph: "MVP", time: "0–6 мес", focus: "Коридор КГ → КЗ", c: "emerald", ic: Sprout,
-      items: ["Биржа грузов + AI-матчинг", "Android приложение водителя", "GPS-трекинг real-time", "Чат — замена WhatsApp", "Эскроу-платежи", "ЭТрН + KYC"],
-      target: "300 перевозчиков, $1M GMV/мес" },
-    { ph: "V2", time: "6–18 мес", focus: "Масштаб КЗ + РФ", c: "cyan", ic: Rocket,
-      items: ["Запуск в Казахстане", "Интеграция с ГосЛог", "iOS приложение водителя", "Голосовой AI-диспетчер", "Страхование и факторинг", "Hardware Teltonika"],
-      target: "1,500 перевозчиков, $12M GMV/год" },
-    { ph: "V3", time: "18–36 мес", focus: "IPO Path", c: "violet", ic: Crown,
-      items: ["Узбекистан + Таджикистан", "Электронный CMR", "Интеграция с таможней", "BI Enterprise + open API", "Starlink Mobility премиум", "Series A $15-25M"],
-      target: "5,000+ перевозчиков, $200M+ GMV" },
+    { ph: "MVP", time: "0–6 мес", focus: "Коридор Бишкек → Алматы", c: "emerald", ic: Sprout,
+      items: ["Биржа грузов + AI-матчинг", "Android приложение водителя", "GPS-трекинг real-time", "Чат — замена WhatsApp", "Эскроу через банк-партнёра KG", "KYC компаний и водителей"],
+      target: "100 перевозчиков · 30 шипперов · $250K GMV/мес" },
+    { ph: "V2", time: "6–18 мес", focus: "Масштаб KZ + вход в РФ", c: "cyan", ic: Rocket,
+      items: ["Запуск в Казахстане", "RU SubCo + аккредитация в ИС ЭПД (ГосЛог)", "iOS приложение водителя", "Голосовой AI-диспетчер", "Страхование и факторинг", "Hardware Teltonika для Pro"],
+      target: "1,500 перевозчиков · run-rate $1.5M GMV/мес" },
+    { ph: "V3", time: "18–36 мес", focus: "Series A · Узбекистан", c: "violet", ic: Crown,
+      items: ["Запуск в Узбекистане", "Электронный CMR на трансграничных", "Интеграция с таможней (KG/KZ/RU)", "BI Enterprise + open API", "Starlink Mobility для премиум-грузов", "Series A $15–25M"],
+      target: "5,000+ перевозчиков · $200M+ GMV/год" },
   ];
   const cMap = {
     emerald: { bg: "bg-emerald-500", text: "text-emerald-600", tagBg: "bg-emerald-100" },
@@ -1519,24 +1615,263 @@ const Roadmap = () => {
 };
 
 // ──────────────────────────────────────────────────────────────
+// 16b. RISKS
+// ──────────────────────────────────────────────────────────────
+const Risks = () => {
+  const risks = [
+    { ic: AlertTriangle, c: "rose", t: "Санкционный риск (вход в РФ)",
+      body: "Нерезидент-владельцы, кросс-граничные расчёты, ограничения на интеграцию с гос-ИС.",
+      mit: "RU SubCo с локальным ген.директором, ОФЭС-агент для ЭПД, расчёты только в рублях через РФ-банк-партнёра. Holding Mervey Ltd остаётся в KG." },
+    { ic: Banknote, c: "amber", t: "Валютный контроль (UZ, частично KG)",
+      body: "Узбекистан — жёсткие правила репатриации, конвертации и трансграничных платежей.",
+      mit: "В UZ запускаемся через локального оператора-партнёра. Эскроу — в национальной валюте, без конвертации, выплата перевозчику в той же валюте, в которой пришло." },
+    { ic: Stamp, c: "amber", t: "Аккредитация ИС ЭПД / ГосЛог",
+      body: "Реестр операторов ЭПД РФ может задержать аккредитацию или отказать.",
+      mit: "Параллельный путь: интеграция через уже аккредитованного оператора (партнёрство), пока идёт собственная аккредитация. Юр-бюджет $250K заложен." },
+    { ic: Scale, c: "violet", t: "Эскроу = банковская услуга",
+      body: "В РФ эскроу-агент — лицензированный банк (ст. 860.7 ГК РФ). В KG/KZ — номинальные/специальные счета.",
+      mit: "MOU с банком-партнёром в KG (стадия согласования) и KZ. В РФ — модель безотзывного аккредитива через РФ-банк, без собственной лицензии." },
+    { ic: ShieldAlert, c: "rose", t: "Регуляторный rollback",
+      body: "Сроки ФЗ-140 / e-ТТН в РФ исторически переносились (2022, 2023).",
+      mit: "Бизнес-модель не зависит от обязательности ЭПД. Ценность для шиппера/перевозчика существует уже сегодня (эскроу, трекинг, AI-матчинг)." },
+    { ic: Skull, c: "neutral", t: "Демпинг от Yandex или АТИ.СУ",
+      body: "Крупный игрок может субсидировать комиссию до 0% и выжать нас на take-rate.",
+      mit: "Не конкурируем по take-rate, а по продукту: эскроу + чат + AI-диспетчер. Yandex Магистрали — 1 из 100 направлений Yandex, не приоритет. АТИ.СУ — биржа, не платформа." },
+  ];
+  const cMap = {
+    rose: { bg: "bg-rose-500", text: "text-rose-600", border: "border-rose-500", tagBg: "bg-rose-100" },
+    amber: { bg: "bg-amber-500", text: "text-amber-600", border: "border-amber-500", tagBg: "bg-amber-100" },
+    violet: { bg: "bg-violet-500", text: "text-violet-600", border: "border-violet-500", tagBg: "bg-violet-100" },
+    neutral: { bg: "bg-neutral-700", text: "text-neutral-700", border: "border-neutral-700", tagBg: "bg-neutral-100" },
+  };
+  return (
+    <section className="bg-[#FAFAF7] py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <Reveal><Eyebrow color="text-rose-600">Risks · Honest View</Eyebrow></Reveal>
+        <Reveal delay={100}>
+          <h2 className="font-display font-extrabold mt-6 text-4xl md:text-6xl leading-tight text-neutral-900 max-w-4xl">
+            Шесть реальных рисков и наши митигации
+          </h2>
+        </Reveal>
+        <Reveal delay={200}>
+          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
+            Мы не будем делать вид, что их нет. Каждый закрыт планом — и каждый имеет своего ответственного в команде.
+          </p>
+        </Reveal>
+        <div className="mt-14 grid md:grid-cols-2 gap-5">
+          {risks.map((r, i) => {
+            const c = cMap[r.c];
+            const Ic = r.ic;
+            return (
+              <Reveal key={i} delay={300 + i * 70}>
+                <div className={`bg-white border-l-4 ${c.border} rounded-r-2xl p-7 hover:shadow-xl transition-all duration-500 h-full flex gap-5`}>
+                  <div className={`w-12 h-12 ${c.tagBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                    <Ic className={`w-6 h-6 ${c.text}`} strokeWidth={1.6} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display font-bold text-lg text-neutral-900 mb-2">{r.t}</h3>
+                    <p className="text-sm text-neutral-700 leading-relaxed mb-3">{r.body}</p>
+                    <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${c.text} mb-1.5`}>Митигация</div>
+                    <p className="text-sm text-neutral-600 leading-relaxed">{r.mit}</p>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────
+// 16c. TEAM
+// ──────────────────────────────────────────────────────────────
+const Team = () => {
+  const founders = [
+    { initial: "?", name: "[Founder #1]", role: "CEO & Co-founder",
+      bio: "Бэкграунд в логистике / операциях СНГ. Закрывал сделки по перевозкам KG → KZ → RU. Ответственный: операции, GTM, регуляторика РФ.",
+      links: ["LinkedIn", "Telegram"] },
+    { initial: "?", name: "[Founder #2]", role: "CTO & Co-founder",
+      bio: "Инженер платформы и мобильных приложений. Опыт построения marketplace-продуктов и геосервисов. Ответственный: продукт, инфраструктура, AI.",
+      links: ["LinkedIn", "GitHub"] },
+    { initial: "?", name: "[Founder #3]", role: "COO / Head of Ops",
+      bio: "Сеть водителей и перевозчиков в KG/KZ. Customer development, KYC, антифрод. Ответственный: запуск коридора, supply side.",
+      links: ["LinkedIn"] },
+  ];
+  const advisors = [
+    { name: "[Advisor]", role: "Логистика", bio: "Экс-директор крупной СНГ-перевозочной компании" },
+    { name: "[Advisor]", role: "Финтех / эскроу", bio: "Опыт построения платёжных продуктов в банке КГ/КЗ" },
+    { name: "[Advisor]", role: "Регуляторика РФ", bio: "Юрист, специализация на ИС ЭПД и ФЗ-140" },
+  ];
+  return (
+    <section id="team" className="bg-white py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <Reveal><Eyebrow color="text-cyan-600">Team · Mervey Ltd</Eyebrow></Reveal>
+        <Reveal delay={100}>
+          <h2 className="font-display font-extrabold mt-6 text-4xl md:text-6xl leading-tight text-neutral-900 max-w-4xl">
+            Кто строит LogisCIS
+          </h2>
+        </Reveal>
+        <Reveal delay={200}>
+          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
+            Команда Mervey Ltd — три фаундера, разделившие домены: операции, продукт и supply. Эдвайзеры закрывают логистику, финтех и РФ-регулятор.
+          </p>
+        </Reveal>
+        <div className="mt-14 grid md:grid-cols-3 gap-5">
+          {founders.map((f, i) => (
+            <Reveal key={i} delay={300 + i * 100}>
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-7 hover:bg-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 h-full flex flex-col">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center text-white font-display font-bold text-2xl">{f.initial}</div>
+                  <div>
+                    <h3 className="font-display font-bold text-xl text-neutral-900">{f.name}</h3>
+                    <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan-600 mt-0.5">{f.role}</div>
+                  </div>
+                </div>
+                <p className="text-sm text-neutral-700 leading-relaxed flex-1">{f.bio}</p>
+                <div className="mt-5 pt-4 border-t border-neutral-200 flex items-center gap-3 text-xs text-neutral-500">
+                  {f.links.map((L, j) => (
+                    <span key={j} className="flex items-center gap-1.5">
+                      <Linkedin className="w-3.5 h-3.5" strokeWidth={2} /> {L}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={700}>
+          <div className="mt-12">
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-4">Эдвайзеры</div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {advisors.map((a, i) => (
+                <div key={i} className="bg-white border border-neutral-200 rounded-xl p-5">
+                  <div className="font-display font-bold text-sm text-neutral-900">{a.name}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-600 mt-1 mb-2">{a.role}</div>
+                  <p className="text-xs text-neutral-600 leading-relaxed">{a.bio}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+        <Reveal delay={900}>
+          <p className="mt-10 text-xs italic text-neutral-500 max-w-3xl">
+            Конкретные имена, фото и LinkedIn раскрываются по запросу инвестора. Mervey Ltd — действующее юрлицо, KG, regnum [—].
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────
+// 16d. LEGAL STRUCTURE
+// ──────────────────────────────────────────────────────────────
+const LegalStructure = () => {
+  const entities = [
+    { flag: "🇰🇬", name: "Mervey Ltd", role: "Holding · IP", status: "Активно", c: "cyan",
+      details: ["Юрисдикция: Кыргызская Республика", "Держит IP, бренд LogisCIS, equity капитал", "Получает международные инвестиции", "Налоги: HTP KG (льгота для IT)"] },
+    { flag: "🇰🇿", name: "TOO LogisCIS KZ", role: "Operating KZ", status: "В регистрации", c: "emerald",
+      details: ["100% дочка Mervey Ltd", "Операции по KZ, эскроу через банк-партнёра KZ", "VAT-резидент КЗ для расчётов с шипперами", "Запуск: M+3"] },
+    { flag: "🇷🇺", name: "ООО LogisCIS RU", role: "Operating RU", status: "План M+9", c: "amber",
+      details: ["Локальное юрлицо для интеграции с ИС ЭПД (ФЗ-140)", "Резидент РФ — обязательное условие для оператора ЭПД", "Эскроу через РФ-банк (безотзывный аккредитив)", "Запуск: M+9 после поднятия раунда"] },
+    { flag: "🇺🇿", name: "Партнёр в UZ", role: "Local operator", status: "План M+18", c: "violet",
+      details: ["Не дочка — операционное партнёрство", "Локальный лицензиат под валютный контроль ЦБ РУз", "Расчёты в сум, без репатриации средств шиппера", "Запуск: M+18"] },
+  ];
+  const banks = [
+    { ic: Banknote, t: "Банк-партнёр KG (эскроу)", d: "MOU стадия согласования. Номинальный счёт под каждую сделку." },
+    { ic: Banknote, t: "Банк-партнёр KZ (эскроу)", d: "Шорт-лист 3 банков. Целевой партнёр — топ-5 KZ." },
+    { ic: FileCheck2, t: "Аккредитация ИС ЭПД (РФ)", d: "Параллельный путь: через действующего оператора + собственная заявка." },
+    { ic: Globe2, t: "Соответствие ФЗ-115 / 152-ФЗ", d: "Юр-бюджет $250K в Investment plan. Compliance officer в RU SubCo." },
+  ];
+  const cMap = {
+    cyan: { bg: "bg-cyan-500", text: "text-cyan-600", border: "border-cyan-500", tagBg: "bg-cyan-100" },
+    emerald: { bg: "bg-emerald-500", text: "text-emerald-600", border: "border-emerald-500", tagBg: "bg-emerald-100" },
+    amber: { bg: "bg-amber-500", text: "text-amber-600", border: "border-amber-500", tagBg: "bg-amber-100" },
+    violet: { bg: "bg-violet-500", text: "text-violet-600", border: "border-violet-500", tagBg: "bg-violet-100" },
+  };
+  return (
+    <section className="bg-[#FAFAF7] py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        <Reveal><Eyebrow color="text-cyan-600">Legal Structure · How We Operate</Eyebrow></Reveal>
+        <Reveal delay={100}>
+          <h2 className="font-display font-extrabold mt-6 text-4xl md:text-6xl leading-tight text-neutral-900 max-w-4xl">
+            Mervey Ltd (KG) → 4 страны через локальные структуры
+          </h2>
+        </Reveal>
+        <Reveal delay={200}>
+          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
+            Holding в Кыргызстане. Локальные операционные юрлица в каждой стране — иначе в РФ не пустят в реестр операторов ЭПД, а в УЗ — в валютный контроль.
+          </p>
+        </Reveal>
+        <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {entities.map((e, i) => {
+            const c = cMap[e.c];
+            return (
+              <Reveal key={i} delay={300 + i * 80}>
+                <div className={`bg-white border-t-4 ${c.border} rounded-b-2xl p-6 hover:shadow-xl transition h-full`}>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-3xl">{e.flag}</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest ${c.tagBg} ${c.text} px-2.5 py-1 rounded-full`}>{e.status}</span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-neutral-900">{e.name}</h3>
+                  <div className={`text-[11px] font-bold uppercase tracking-[0.2em] ${c.text} mb-4`}>{e.role}</div>
+                  <ul className="space-y-2">
+                    {e.details.map((d, j) => (
+                      <li key={j} className="flex items-start gap-2 text-xs text-neutral-700 leading-relaxed">
+                        <span className={`block w-1 h-1 rounded-full ${c.bg} mt-1.5 flex-shrink-0`} />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+        <Reveal delay={700}>
+          <div className="mt-14">
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 mb-4">Финтех и compliance стек</div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {banks.map((b, i) => {
+                const Ic = b.ic;
+                return (
+                  <div key={i} className="bg-white border border-neutral-200 rounded-xl p-5 hover:shadow-md transition">
+                    <Ic className="w-6 h-6 text-cyan-600 mb-3" strokeWidth={1.6} />
+                    <div className="font-display font-bold text-sm text-neutral-900 mb-1.5">{b.t}</div>
+                    <p className="text-xs text-neutral-600 leading-relaxed">{b.d}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────
 // 17. INVESTMENT
 // ──────────────────────────────────────────────────────────────
 const Investment = () => {
   const useData = [
-    { name: "Разработка (8 чел)", value: 45, color: "#06B6D4" },
-    { name: "Продажи + маркетинг", value: 25, color: "#10B981" },
-    { name: "Операции", value: 15, color: "#F59E0B" },
-    { name: "Юридика / комплаенс", value: 8, color: "#8B5CF6" },
-    { name: "Резерв", value: 7, color: "#64748B" },
+    { name: "Разработка (6–8 чел)", value: 38, color: "#06B6D4" },
+    { name: "Sales + маркетинг (KG/KZ/RU)", value: 30, color: "#10B981" },
+    { name: "Операции и supply ops", value: 12, color: "#F59E0B" },
+    { name: "Юр / комплаенс / эскроу-setup", value: 12, color: "#8B5CF6" },
+    { name: "Hardware + интеграции", value: 4, color: "#EAB308" },
+    { name: "Резерв", value: 4, color: "#64748B" },
   ];
   const kpis = [
     ["Активных перевозчиков", "1,500+"],
-    ["Активных шипперов", "300+"],
-    ["Завершённых перевозок", "12,000+"],
-    ["GMV", "$12M+"],
-    ["ARR", "$1.4M+"],
-    ["NPS водителей", ">60"],
-    ["% заказов с трекингом", ">85%"],
+    ["Активных шипперов", "500+"],
+    ["Завершённых перевозок (cumulative)", "8,000+"],
+    ["GMV M+18 (run-rate)", "$18M / год"],
+    ["ARR M+18", "$1.8M+"],
+    ["NPS водителей", "≥ 60"],
+    ["% заказов с трекингом", "≥ 85%"],
   ];
   return (
     <section id="invest" className="relative bg-[#0A0E1A] text-white py-32 overflow-hidden">
@@ -1553,7 +1888,7 @@ const Investment = () => {
             </Reveal>
             <Reveal delay={300}>
               <p className="mt-8 text-xl text-cyan-300 leading-snug max-w-xl">
-                18 месяцев runway · breakeven к M+14 · позиция в РФ к e-ТТН (1 сентября 2026)
+                18 месяцев runway · breakeven к M+18 · вход в РФ через ООО LogisCIS RU к e-ТТН (1 сентября 2026)
               </p>
             </Reveal>
             <Reveal delay={500}>
@@ -1586,11 +1921,11 @@ const Investment = () => {
             <Reveal delay={700}>
               <div className="mt-8 grid grid-cols-3 gap-3">
                 <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4 text-center">
-                  <div className="font-display font-bold text-2xl text-cyan-300">14 мес</div>
+                  <div className="font-display font-bold text-2xl text-cyan-300">18 мес</div>
                   <div className="text-xs text-neutral-400 mt-1">до breakeven</div>
                 </div>
                 <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center">
-                  <div className="font-display font-bold text-2xl text-emerald-300">27×</div>
+                  <div className="font-display font-bold text-2xl text-emerald-300">18×</div>
                   <div className="text-xs text-neutral-400 mt-1">LTV / CAC</div>
                 </div>
                 <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-center">
@@ -1609,7 +1944,7 @@ const Investment = () => {
                 Окно — 1 сентября 2026. Запустим MVP сейчас → войдём в РФ инфраструктурой, не приложением.
               </div>
             </div>
-            <a href="mailto:invest@logiscis.com" className="flex-shrink-0 inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black transition">
+            <a href="mailto:invest@mervey.kg" className="flex-shrink-0 inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black transition">
               Get in touch <ArrowRight className="w-4 h-4" />
             </a>
           </div>
@@ -1630,13 +1965,17 @@ const Footer = () => (
           <div className="w-7 h-7 rounded-md bg-white/5 border border-white/10 flex items-center justify-center">
             <Truck className="w-4 h-4 text-cyan-400" strokeWidth={2.5} />
           </div>
-          <span className="font-display font-bold text-white">LogisCIS</span>
+          <div className="flex flex-col leading-none">
+            <span className="font-display font-bold text-white">LogisCIS</span>
+            <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500 mt-0.5">by Mervey Ltd</span>
+          </div>
         </div>
-        <div className="text-xs">Operating system for CIS freight logistics · Бишкек · 2026</div>
+        <div className="text-xs">Operating system for CIS freight logistics</div>
+        <div className="text-xs mt-1">Mervey Ltd · Бишкек, Кыргызстан · 2026</div>
       </div>
       <div className="text-xs text-right">
         <div>Confidential · for invited investors only</div>
-        <div className="mt-1">v2.0 · April 2026</div>
+        <div className="mt-1">v2.1 · April 2026</div>
       </div>
     </div>
   </footer>
@@ -1660,12 +1999,16 @@ export default function App() {
       <Positioning />
       <Solution />
       <UserTypes />
+      <Traction />
       <Tracking />
       <AISection />
       <Business />
       <UnitEcon />
       <Moats />
       <Roadmap />
+      <Risks />
+      <Team />
+      <LegalStructure />
       <Investment />
       <Footer />
     </div>
