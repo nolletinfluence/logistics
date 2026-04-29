@@ -116,6 +116,10 @@ const SiteStyles = () => (
       will-change: transform;
     }
     .cursor-blob.is-link { width: 64px; height: 64px; background: rgba(217,119,87,0.85); }
+    @media (hover: hover) and (pointer: fine) {
+      html, body, * { cursor: none !important; }
+      input, textarea, select, [contenteditable="true"] { cursor: text !important; }
+    }
     @media (hover: none), (pointer: coarse) { .cursor-blob { display: none; } }
 
     /* Marquee */
