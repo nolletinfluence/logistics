@@ -14,20 +14,73 @@ import {
 } from "recharts";
 
 // ──────────────────────────────────────────────────────────────
+// Design tokens (Claude × LogisCIS)
+// ──────────────────────────────────────────────────────────────
+const CLAUDE = {
+  warm: "#D97757",
+  warmDeep: "#BD5D3A",
+  warmLight: "#F0A573",
+  cream: "#F7F2EB",
+  ink: "#1B1B1F",
+};
+
+// ──────────────────────────────────────────────────────────────
 // Custom CSS injected once
 // ──────────────────────────────────────────────────────────────
 const SiteStyles = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
-    .font-display { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-spacing: -0.01em; }
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+    :root {
+      --c-warm: #D97757;
+      --c-warm-deep: #BD5D3A;
+      --c-warm-light: #F0A573;
+      --c-cream: #F7F2EB;
+      --c-ink: #1B1B1F;
+      --c-cyan: #06B6D4;
+    }
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--c-cream); }
+    .font-display { font-family: 'Bricolage Grotesque', system-ui, sans-serif; letter-spacing: -0.018em; }
+    .font-serif { font-family: 'Instrument Serif', 'Bricolage Grotesque', serif; letter-spacing: -0.01em; }
     .font-body { font-family: 'Inter', system-ui, sans-serif; }
+
     @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slowSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes pulseRing { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 0.1; } }
+    @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-12px) translateX(4px); } }
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-22px) translateX(-8px); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes meshShift {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); }
+      33% { transform: translate3d(2%,3%,0) scale(1.05); }
+      66% { transform: translate3d(-3%,-2%,0) scale(0.96); }
+    }
+    @keyframes meshShiftAlt {
+      0%, 100% { transform: translate3d(0,0,0) scale(1.05); }
+      40% { transform: translate3d(-4%,2%,0) scale(0.95); }
+      70% { transform: translate3d(3%,-3%,0) scale(1.08); }
+    }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes glowPulse { 0%, 100% { opacity: 0.55; filter: blur(40px); } 50% { opacity: 0.9; filter: blur(60px); } }
+    @keyframes blurInUp {
+      from { opacity: 0; filter: blur(14px); transform: translateY(24px); letter-spacing: 0.05em; }
+      to { opacity: 1; filter: blur(0); transform: translateY(0); letter-spacing: -0.018em; }
+    }
+    @keyframes drawIn { from { stroke-dashoffset: 200; opacity: 0; } to { stroke-dashoffset: 0; opacity: 1; } }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
     .animate-fadeUp { animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
     .animate-pulseRing { animation: pulseRing 2.5s ease-in-out infinite; }
     .animate-slowSpin { animation: slowSpin 20s linear infinite; }
+    .animate-float { animation: float 7s ease-in-out infinite; }
+    .animate-floatSlow { animation: floatSlow 11s ease-in-out infinite; }
+    .animate-glowPulse { animation: glowPulse 5s ease-in-out infinite; }
+
     .grid-bg {
       background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
@@ -38,7 +91,102 @@ const SiteStyles = () => (
                         linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
       background-size: 80px 80px;
     }
-    html { scroll-behavior: smooth; }
+
+    /* SVG grain overlay — Claude signature */
+    .grain {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0.35; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+    .grain-light { opacity: 0.18; }
+
+    /* Mesh gradient blobs */
+    .mesh-blob { position: absolute; border-radius: 9999px; filter: blur(70px); will-change: transform; }
+    .mesh-warm { background: radial-gradient(circle, rgba(217,119,87,0.55) 0%, rgba(217,119,87,0) 65%); }
+    .mesh-cyan { background: radial-gradient(circle, rgba(34,211,238,0.45) 0%, rgba(34,211,238,0) 65%); }
+    .mesh-violet { background: radial-gradient(circle, rgba(139,92,246,0.35) 0%, rgba(139,92,246,0) 65%); }
+    .mesh-emerald { background: radial-gradient(circle, rgba(16,185,129,0.30) 0%, rgba(16,185,129,0) 65%); }
+
+    /* Custom cursor */
+    .cursor-blob {
+      position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+      border-radius: 9999px; pointer-events: none; z-index: 9999;
+      mix-blend-mode: difference; background: rgba(240,165,115,0.9);
+      transform: translate3d(-100px,-100px,0);
+      transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
+      will-change: transform;
+    }
+    .cursor-blob.is-link { width: 64px; height: 64px; background: rgba(217,119,87,0.85); }
+    @media (hover: none), (pointer: coarse) { .cursor-blob { display: none; } }
+
+    /* Marquee */
+    .marquee-track { display: flex; gap: 3rem; animation: ticker 40s linear infinite; will-change: transform; }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* Tilt + spotlight cards */
+    .tilt-card { transform-style: preserve-3d; transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
+    .tilt-content { transform: translateZ(20px); }
+    .spotlight-card {
+      position: relative; overflow: hidden;
+    }
+    .spotlight-card::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.35s ease;
+      background: radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(217,119,87,0.18), transparent 60%);
+    }
+    .spotlight-card:hover::before { opacity: 1; }
+
+    /* Magnetic */
+    .magnetic { transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
+
+    /* Section spotlight (dark) */
+    .section-spotlight::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+      background: radial-gradient(600px circle at var(--mx,50%) var(--my,30%), rgba(217,119,87,0.18), transparent 55%);
+      transition: opacity 0.4s ease;
+    }
+
+    /* Gradient text shimmer */
+    .text-gradient {
+      background: linear-gradient(110deg, var(--c-warm) 0%, var(--c-warm-light) 35%, var(--c-cyan) 70%, var(--c-warm) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: gradientShift 9s ease-in-out infinite;
+    }
+
+    /* Letter reveal */
+    .reveal-letter {
+      display: inline-block; opacity: 0; filter: blur(10px); transform: translateY(0.3em);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s, transform 0.7s;
+    }
+    .reveal-letter.shown { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+    /* Underline on hover (links) */
+    .ul-anim { background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px;
+      background-repeat: no-repeat; background-position: 0 100%;
+      transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+    .ul-anim:hover { background-size: 100% 1px; }
+
+    /* Marquee fade edges */
+    .marquee-fade {
+      mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+
+    /* Subtle border glow on dark cards */
+    .glow-border {
+      position: relative;
+    }
+    .glow-border::after {
+      content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+      background: linear-gradient(135deg, rgba(217,119,87,0.6), rgba(34,211,238,0.4), transparent 60%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+    }
+    .glow-border:hover::after { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
   `}</style>
 );
 
@@ -80,6 +228,204 @@ const Reveal = ({ children, delay = 0, className = "" }) => {
 };
 
 // ──────────────────────────────────────────────────────────────
+// Animation primitives
+// ──────────────────────────────────────────────────────────────
+
+// Custom cursor blob — follows mouse, expands on links
+const CustomCursor = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let x = -100, y = -100, tx = -100, ty = -100;
+    let raf = 0;
+    const move = (e) => { tx = e.clientX; ty = e.clientY; };
+    const enter = () => el.classList.add("is-link");
+    const leave = () => el.classList.remove("is-link");
+    const loop = () => {
+      x += (tx - x) * 0.18; y += (ty - y) * 0.18;
+      el.style.transform = `translate3d(${x - 18}px, ${y - 18}px, 0)`;
+      raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener("mousemove", move, { passive: true });
+    document.querySelectorAll("a, button, .magnetic, .tilt-card").forEach((n) => {
+      n.addEventListener("mouseenter", enter);
+      n.addEventListener("mouseleave", leave);
+    });
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return <div ref={ref} className="cursor-blob" aria-hidden />;
+};
+
+// Animated count-up on view
+const AnimatedNumber = ({ value, prefix = "", suffix = "", duration = 1600, decimals = 0, className = "" }) => {
+  const [display, setDisplay] = useState(0);
+  const ref = useRef(null);
+  const fired = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !fired.current) {
+        fired.current = true;
+        const start = performance.now();
+        const tick = (now) => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          setDisplay(value * eased);
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.4 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [value, duration]);
+  const formatted = decimals > 0
+    ? display.toFixed(decimals)
+    : Math.round(display).toLocaleString("en-US");
+  return <span ref={ref} className={className}>{prefix}{formatted}{suffix}</span>;
+};
+
+// Marquee strip
+const Marquee = ({ items, className = "" }) => (
+  <div className={`marquee-fade overflow-hidden ${className}`}>
+    <div className="marquee-track">
+      {[...items, ...items].map((it, i) => (
+        <div key={i} className="flex items-center gap-3 text-sm font-display font-semibold whitespace-nowrap">
+          {it.icon && <it.icon className="w-4 h-4 opacity-60" strokeWidth={1.8} />}
+          <span>{it.label}</span>
+          <span className="w-1 h-1 rounded-full bg-current opacity-40" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+// 3D tilt wrapper
+const Tilt = ({ children, max = 8, className = "" }) => {
+  const ref = useRef(null);
+  const onMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    const rx = (py - 0.5) * -2 * max;
+    const ry = (px - 0.5) * 2 * max;
+    el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    el.style.setProperty("--mx", `${px * 100}%`);
+    el.style.setProperty("--my", `${py * 100}%`);
+  };
+  const reset = () => {
+    const el = ref.current;
+    if (el) el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+  };
+  return (
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={reset}
+      className={`tilt-card spotlight-card ${className}`}>
+      <div className="tilt-content">{children}</div>
+    </div>
+  );
+};
+
+// Magnetic — follows cursor when nearby
+const Magnetic = ({ children, strength = 0.35, className = "" }) => {
+  const ref = useRef(null);
+  const onMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width / 2) * strength;
+    const y = (e.clientY - r.top - r.height / 2) * strength;
+    el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  };
+  const reset = () => {
+    const el = ref.current;
+    if (el) el.style.transform = "translate3d(0,0,0)";
+  };
+  return (
+    <span ref={ref} onMouseMove={onMove} onMouseLeave={reset} className={`inline-block magnetic ${className}`}>
+      {children}
+    </span>
+  );
+};
+
+// Section spotlight — radial follow on dark sections
+const SectionSpotlight = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const onMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    el.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  return (
+    <div ref={ref} onMouseMove={onMove} className={`section-spotlight ${className}`}>{children}</div>
+  );
+};
+
+// Letter-by-letter reveal
+const LetterReveal = ({ text, delay = 0, className = "" }) => {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver((es) => {
+      if (es[0].isIntersecting) setShown(true);
+    }, { threshold: 0.2 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  const chars = text.split("");
+  return (
+    <span ref={ref} className={className} aria-label={text}>
+      {chars.map((ch, i) => (
+        <span key={i}
+          className={`reveal-letter ${shown ? "shown" : ""}`}
+          style={{ transitionDelay: shown ? `${delay + i * 28}ms` : "0ms" }}
+        >{ch === " " ? " " : ch}</span>
+      ))}
+    </span>
+  );
+};
+
+// Animated mesh background — multiple drifting blobs
+const MeshBackground = ({ variant = "dark" }) => {
+  const blobs = variant === "dark"
+    ? [
+        { c: "mesh-warm", size: "70vh", x: "-10%", y: "-15%", anim: "meshShift", dur: "18s" },
+        { c: "mesh-cyan", size: "55vh", x: "70%", y: "20%", anim: "meshShiftAlt", dur: "22s" },
+        { c: "mesh-violet", size: "50vh", x: "30%", y: "70%", anim: "meshShift", dur: "26s" },
+      ]
+    : [
+        { c: "mesh-warm", size: "60vh", x: "-15%", y: "10%", anim: "meshShift", dur: "20s", op: 0.6 },
+        { c: "mesh-cyan", size: "50vh", x: "75%", y: "60%", anim: "meshShiftAlt", dur: "24s", op: 0.5 },
+      ];
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+      {blobs.map((b, i) => (
+        <div
+          key={i}
+          className={`mesh-blob ${b.c}`}
+          style={{
+            width: b.size, height: b.size, left: b.x, top: b.y,
+            animation: `${b.anim} ${b.dur} ease-in-out infinite`,
+            opacity: b.op ?? 1,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// ──────────────────────────────────────────────────────────────
 // Scroll progress + Nav
 // ──────────────────────────────────────────────────────────────
 const Nav = () => {
@@ -94,12 +440,13 @@ const Nav = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200">
-      <div className="absolute bottom-0 left-0 h-px bg-cyan-500 transition-all duration-100" style={{ width: `${progress * 100}%` }} />
+    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[var(--c-cream)]/85 border-b border-neutral-200/80">
+      <div className="absolute bottom-0 left-0 h-px bg-gradient-to-r from-[#D97757] via-[#F0A573] to-cyan-500 transition-all duration-100" style={{ width: `${progress * 100}%` }} />
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-md bg-neutral-900 flex items-center justify-center">
-            <Truck className="w-4 h-4 text-cyan-400" strokeWidth={2.5} />
+          <div className="w-7 h-7 rounded-md bg-neutral-900 flex items-center justify-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D97757] via-transparent to-cyan-500/40 opacity-60" />
+            <Truck className="w-4 h-4 text-[#F0A573] relative" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col leading-none">
             <span className="font-display font-bold text-neutral-900">LogisCIS</span>
@@ -115,9 +462,11 @@ const Nav = () => {
           <a href="#team" className="hover:text-neutral-900 transition">Team</a>
           <a href="#invest" className="hover:text-neutral-900 transition">Invest</a>
         </div>
-        <a href="#invest" className="hidden md:inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-neutral-900 text-white hover:bg-cyan-600 transition">
-          $2.5M Seed <ArrowRight className="w-3 h-3" />
-        </a>
+        <Magnetic strength={0.4} className="hidden md:inline-block">
+          <a href="#invest" className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-2 rounded-full bg-neutral-900 text-white hover:bg-[#D97757] transition-colors duration-300">
+            $2.5M Seed <ArrowRight className="w-3 h-3" />
+          </a>
+        </Magnetic>
       </div>
     </nav>
   );
@@ -133,99 +482,124 @@ const Eyebrow = ({ children, color = "text-cyan-600" }) => (
 // ──────────────────────────────────────────────────────────────
 // 1. HERO
 // ──────────────────────────────────────────────────────────────
-const Hero = () => (
-  <section className="relative min-h-screen bg-[#0A0E1A] text-white overflow-hidden flex items-center pt-14">
-    <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
-    <div className="absolute -top-40 -right-40 w-[80vh] h-[80vh] rounded-full bg-cyan-500/20 blur-3xl" />
-    <div className="absolute -bottom-40 -left-40 w-[60vh] h-[60vh] rounded-full bg-cyan-700/20 blur-3xl" />
+const Hero = () => {
+  const tickerItems = [
+    { icon: Truck, label: "Бишкек → Алматы" },
+    { icon: Truck, label: "Алматы → Москва" },
+    { icon: Truck, label: "Москва → Ташкент" },
+    { icon: Truck, label: "Ташкент → Бишкек" },
+    { icon: MapPin, label: "Real-time GPS" },
+    { icon: Shield, label: "Escrow-платежи" },
+    { icon: Bot, label: "AI-диспетчер" },
+    { icon: FileText, label: "e-ТТН ready" },
+  ];
+  return (
+  <section className="relative min-h-screen bg-[#0A0E1A] text-white overflow-hidden flex flex-col pt-14">
+    <SectionSpotlight className="flex-1 flex items-center relative">
+      <div className="absolute inset-0 grid-bg opacity-25 pointer-events-none" />
+      <MeshBackground variant="dark" />
+      <div className="grain pointer-events-none" />
 
-    <div className="relative max-w-7xl mx-auto px-6 py-16 w-full grid md:grid-cols-12 gap-12 items-center">
-      <div className="md:col-span-8">
-        <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-cyan-400 mb-8 animate-fadeUp">
-          <span className="w-12 h-px bg-cyan-400" />
-          Mervey Ltd · Investor Deck · April 2026
+      <div className="relative max-w-7xl mx-auto px-6 py-16 w-full grid md:grid-cols-12 gap-12 items-center">
+        <div className="md:col-span-8">
+          <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-[#F0A573] mb-8 animate-fadeUp">
+            <span className="w-12 h-px bg-[#F0A573]" />
+            Mervey Ltd · Investor Deck · April 2026
+          </div>
+          <h1 className="font-display font-extrabold leading-[0.85] tracking-tight mb-6 text-[20vw] md:text-[10rem] animate-fadeUp" style={{ animationDelay: "100ms" }}>
+            <span className="text-gradient">Logis</span>
+            <span className="font-serif italic">CIS</span>
+          </h1>
+          <div className="max-w-2xl animate-fadeUp" style={{ animationDelay: "300ms" }}>
+            <p className="font-display text-2xl md:text-3xl text-[#F0A573] leading-tight mb-3">
+              Operating system for <span className="font-serif italic">CIS freight logistics</span>
+            </p>
+            <p className="text-base text-neutral-400 leading-relaxed">
+              Marketplace · Real-time tracking · Escrow · AI dispatcher · e-Documents.<br/>
+              Один продукт для <span className="text-white font-semibold">$163B</span> рынка с sub-5% цифрового проникновения.
+            </p>
+          </div>
+          <div className="mt-10 flex flex-wrap gap-3 animate-fadeUp" style={{ animationDelay: "500ms" }}>
+            {[
+              { label: "Seed · $2.5M", color: "border-emerald-400/60 text-emerald-300" },
+              { label: "B2B SaaS + Marketplace", color: "border-cyan-400/60 text-cyan-300" },
+              { label: "Mervey Ltd · KG → KZ → RU → UZ", color: "border-[#F0A573]/60 text-[#F0A573]" },
+            ].map((p, i) => (
+              <span key={i} className={`px-4 py-2 rounded-full border ${p.color} text-xs font-bold uppercase tracking-[0.15em] backdrop-blur-md bg-white/[0.04]`}>
+                {p.label}
+              </span>
+            ))}
+          </div>
+          <div className="mt-14 flex items-center gap-6 animate-fadeUp" style={{ animationDelay: "700ms" }}>
+            <Magnetic strength={0.4}>
+              <a href="#vision" className="inline-flex items-center gap-3 text-sm text-neutral-300 hover:text-white transition group">
+                <span className="w-12 h-12 rounded-full border border-neutral-700 group-hover:border-[#F0A573] group-hover:bg-white/5 flex items-center justify-center transition">
+                  <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition" />
+                </span>
+                <span className="ul-anim">Scroll to read</span>
+              </a>
+            </Magnetic>
+          </div>
         </div>
-        <h1 className="font-display font-extrabold leading-[0.85] tracking-tight mb-6 text-[20vw] md:text-[10rem] animate-fadeUp" style={{ animationDelay: "100ms" }}>
-          LogisCIS
-        </h1>
-        <div className="max-w-2xl animate-fadeUp" style={{ animationDelay: "300ms" }}>
-          <p className="font-display text-2xl md:text-3xl text-cyan-300 leading-tight mb-3">
-            Operating system for CIS freight logistics
-          </p>
-          <p className="text-base text-neutral-400 leading-relaxed">
-            Marketplace · Real-time tracking · Escrow · AI dispatcher · e-Documents.<br/>
-            Один продукт для $163B рынка с sub-5% цифрового проникновения.
-          </p>
-        </div>
-        <div className="mt-10 flex flex-wrap gap-3 animate-fadeUp" style={{ animationDelay: "500ms" }}>
-          {[
-            { label: "Seed · $2.5M", color: "border-emerald-400 text-emerald-400" },
-            { label: "B2B SaaS + Marketplace", color: "border-cyan-400 text-cyan-400" },
-            { label: "Mervey Ltd · Бишкек · KG → KZ → RU → UZ", color: "border-amber-400 text-amber-400" },
-          ].map((p, i) => (
-            <span key={i} className={`px-4 py-2 rounded-full border ${p.color} text-xs font-bold uppercase tracking-[0.15em] backdrop-blur-sm bg-white/5`}>
-              {p.label}
-            </span>
-          ))}
-        </div>
-        <div className="mt-14 flex items-center gap-6 animate-fadeUp" style={{ animationDelay: "700ms" }}>
-          <a href="#vision" className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition group">
-            <span className="w-10 h-10 rounded-full border border-neutral-700 group-hover:border-cyan-400 flex items-center justify-center transition">
-              <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition" />
-            </span>
-            Scroll to read
-          </a>
-        </div>
-      </div>
-      <div className="md:col-span-4 hidden md:block animate-fadeUp" style={{ animationDelay: "400ms" }}>
-        <div className="relative aspect-square">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/20 to-transparent blur-2xl" />
-          <div className="relative h-full flex items-center justify-center">
-            <div className="relative">
-              <Truck className="w-32 h-32 text-cyan-300" strokeWidth={1.2} />
-              <div className="absolute -inset-12 rounded-full border border-cyan-500/30 animate-slowSpin" style={{ borderTopColor: "transparent", borderRightColor: "transparent" }} />
+        <div className="md:col-span-4 hidden md:block animate-fadeUp" style={{ animationDelay: "400ms" }}>
+          <div className="relative aspect-square">
+            <div className="absolute inset-6 rounded-full bg-gradient-to-br from-[#D97757]/40 to-transparent blur-3xl animate-glowPulse" />
+            <div className="absolute inset-12 rounded-full bg-gradient-to-tr from-cyan-500/30 to-transparent blur-2xl animate-glowPulse" style={{ animationDelay: "1.5s" }} />
+            <div className="relative h-full flex items-center justify-center">
+              <div className="relative animate-floatSlow">
+                <Truck className="w-32 h-32 text-[#F0A573]" strokeWidth={1.1} />
+                <div className="absolute -inset-12 rounded-full border border-[#D97757]/30 animate-slowSpin" style={{ borderTopColor: "transparent", borderRightColor: "transparent" }} />
+                <div className="absolute -inset-20 rounded-full border border-cyan-400/15 animate-slowSpin" style={{ animationDirection: "reverse", animationDuration: "32s", borderBottomColor: "transparent", borderLeftColor: "transparent" }} />
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </SectionSpotlight>
+    <div className="relative border-t border-white/10 py-5 text-neutral-400">
+      <Marquee items={tickerItems} />
     </div>
   </section>
-);
+  );
+};
 
 // ──────────────────────────────────────────────────────────────
 // 2. VISION
 // ──────────────────────────────────────────────────────────────
 const Vision = () => {
   const stats = [
-    { v: "$163B", l: "Total addressable market", s: "+8% YoY", c: "cyan-600", b: "border-cyan-200" },
-    { v: "Sub-5%", l: "Digital penetration today", s: "TAM premium 2-3×", c: "amber-600", b: "border-amber-200" },
-    { v: "5 мес", l: "До обязательного e-ТТН", s: "Forced onboarding", c: "rose-600", b: "border-rose-200" },
-    { v: "$0", l: "Берёт АТИ.СУ с транзакций", s: "Money on the table", c: "emerald-600", b: "border-emerald-200" },
+    { node: <AnimatedNumber value={163} prefix="$" suffix="B" duration={1800} />, l: "Total addressable market", s: "+8% YoY", c: "cyan-600", b: "border-cyan-200", dot: "bg-cyan-600" },
+    { node: <span>Sub-<AnimatedNumber value={5} suffix="%" duration={1400} /></span>, l: "Digital penetration today", s: "TAM premium 2–3×", c: "[#D97757]", b: "border-[#D97757]/30", dot: "bg-[#D97757]" },
+    { node: <span><AnimatedNumber value={5} duration={1200} /> мес</span>, l: "До обязательного e-ТТН", s: "Forced onboarding", c: "rose-600", b: "border-rose-200", dot: "bg-rose-600" },
+    { node: "$0", l: "Берёт АТИ.СУ с транзакций", s: "Money on the table", c: "emerald-600", b: "border-emerald-200", dot: "bg-emerald-600" },
   ];
   return (
-    <section id="vision" className="relative bg-[#FAFAF7] py-32">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="vision" className="relative bg-[var(--c-cream)] py-32 overflow-hidden">
+      <div className="absolute inset-0 grain grain-light pointer-events-none" />
+      <div className="max-w-7xl mx-auto px-6 relative">
         <Reveal><Eyebrow>Vision · The Thesis</Eyebrow></Reveal>
         <Reveal delay={100}>
           <h2 className="font-display font-extrabold mt-8 text-5xl md:text-7xl leading-[0.95] text-neutral-900 max-w-5xl">
             Логистика СНГ переживает свой
-            <span className="text-cyan-600 italic"> «китайский момент»</span>
+            <span className="font-serif italic text-[#D97757]"> «китайский момент»</span>
           </h2>
         </Reveal>
         <Reveal delay={200}>
           <p className="mt-10 text-xl md:text-2xl text-neutral-600 max-w-3xl leading-relaxed">
-            Sub-5% цифровое проникновение. Регуляторный триггер через 5 месяцев. Главный конкурент в дефолте. Аналог Китая 2015 года — но без западных игроков.
+            Sub-5% цифровое проникновение. Регуляторный триггер через 5 месяцев. Главный конкурент в дефолте. Аналог Китая 2015 года — но без глобальных игроков.
           </p>
         </Reveal>
         <div className="mt-20 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {stats.map((s, i) => (
             <Reveal key={i} delay={300 + i * 100}>
-              <div className={`bg-white border ${s.b} rounded-2xl p-6 hover:-translate-y-1 hover:shadow-2xl transition-all duration-500`}>
-                <div className={`w-2 h-2 rounded-full bg-${s.c} mb-5`} />
-                <div className="font-display font-bold text-5xl md:text-6xl text-neutral-900 leading-none">{s.v}</div>
-                <div className="mt-3 text-sm text-neutral-600">{s.l}</div>
-                <div className={`mt-2 text-xs font-bold uppercase tracking-wider text-${s.c}`}>{s.s}</div>
-              </div>
+              <Tilt max={6}>
+                <div className={`bg-white border ${s.b} rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 glow-border`}>
+                  <div className={`w-2 h-2 rounded-full ${s.dot} mb-5`} />
+                  <div className="font-display font-bold text-5xl md:text-6xl text-neutral-900 leading-none">{s.node}</div>
+                  <div className="mt-3 text-sm text-neutral-600">{s.l}</div>
+                  <div className={`mt-2 text-xs font-bold uppercase tracking-wider text-${s.c}`}>{s.s}</div>
+                </div>
+              </Tilt>
             </Reveal>
           ))}
         </div>
@@ -329,7 +703,7 @@ const Market = () => {
     { v: "$11.35B", l: "Трансграничный СНГ", c: "bg-amber-500" },
   ];
   return (
-    <section id="market" className="bg-[#FAFAF7] py-32">
+    <section id="market" className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow>Market Sizing</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -426,9 +800,10 @@ const Crisis = () => {
   };
   return (
     <section className="relative bg-[#0A0E1A] text-white py-32 overflow-hidden">
-      <div className="absolute inset-0 grid-bg pointer-events-none opacity-30" />
-      <div className="absolute top-0 right-0 w-[60vh] h-[60vh] rounded-full bg-rose-500/10 blur-3xl pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="absolute inset-0 grid-bg pointer-events-none opacity-25" />
+      <MeshBackground variant="dark" />
+      <div className="grain pointer-events-none" />
+      <SectionSpotlight className="relative max-w-7xl mx-auto px-6 py-2">
         <Reveal><Eyebrow color="text-rose-400">Russian Platform Crisis · Real-time</Eyebrow></Reveal>
         <Reveal delay={100}>
           <h2 className="font-display font-extrabold mt-6 text-4xl md:text-6xl leading-tight max-w-5xl">
@@ -481,13 +856,13 @@ const Crisis = () => {
           </div>
         </Reveal>
         <Reveal delay={800}>
-          <div className="mt-12 max-w-3xl border-l-2 border-cyan-400 pl-6 py-2">
-            <p className="font-display text-lg italic text-neutral-300">
+          <div className="mt-12 max-w-3xl border-l-2 border-[#D97757] pl-6 py-2">
+            <p className="font-serif text-xl italic text-neutral-200">
               Кризис вычищает рынок. Выживают платформы с unit economics, не subsidy growth. Это идеальный момент входа — не на пике, а в долине.
             </p>
           </div>
         </Reveal>
-      </div>
+      </SectionSpotlight>
     </section>
   );
 };
@@ -606,7 +981,7 @@ const Competition = () => {
   ];
 
   return (
-    <section id="competition" className="bg-[#FAFAF7] py-32">
+    <section id="competition" className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow color="text-violet-600">Competitive Landscape</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -978,7 +1353,7 @@ const Solution = () => {
     violet: { bg: "bg-violet-500", text: "text-violet-600", tagBg: "bg-violet-100" },
   };
   return (
-    <section id="solution" className="bg-[#FAFAF7] py-32">
+    <section id="solution" className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow color="text-emerald-600">The Solution</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -1186,9 +1561,10 @@ const Tracking = () => {
   ];
   return (
     <section className="relative bg-[#0A0E1A] text-white py-32 overflow-hidden">
-      <div className="absolute top-1/4 right-0 w-[40vh] h-[40vh] rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-6">
-        <Reveal><Eyebrow color="text-cyan-300">Tech · Tracking Reliability</Eyebrow></Reveal>
+      <MeshBackground variant="dark" />
+      <div className="grain pointer-events-none" />
+      <SectionSpotlight className="relative max-w-7xl mx-auto px-6 py-2">
+        <Reveal><Eyebrow color="text-[#F0A573]">Tech · Tracking Reliability</Eyebrow></Reveal>
         <Reveal delay={100}>
           <h2 className="font-display font-extrabold mt-6 text-4xl md:text-6xl leading-tight max-w-4xl">
             4 слоя надёжности — груз виден всегда
@@ -1222,7 +1598,7 @@ const Tracking = () => {
             );
           })}
         </div>
-      </div>
+      </SectionSpotlight>
     </section>
   );
 };
@@ -1328,7 +1704,7 @@ const Business = () => {
     { v: "27×", l: "LTV / CAC", c: "text-amber-600" },
   ];
   return (
-    <section id="economics" className="bg-[#FAFAF7] py-32">
+    <section id="economics" className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow color="text-emerald-600">Business Model</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -1496,7 +1872,7 @@ const Moats = () => {
     violet: { bg: "bg-violet-500", text: "text-violet-600", border: "border-violet-500" },
   };
   return (
-    <section className="bg-[#FAFAF7] py-32">
+    <section className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow color="text-violet-600">Defensibility · Why We Win</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -1645,7 +2021,7 @@ const Risks = () => {
     neutral: { bg: "bg-neutral-700", text: "text-neutral-700", border: "border-neutral-700", tagBg: "bg-neutral-100" },
   };
   return (
-    <section className="bg-[#FAFAF7] py-32">
+    <section className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow color="text-rose-600">Risks · Honest View</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -1792,7 +2168,7 @@ const LegalStructure = () => {
     violet: { bg: "bg-violet-500", text: "text-violet-600", border: "border-violet-500", tagBg: "bg-violet-100" },
   };
   return (
-    <section className="bg-[#FAFAF7] py-32">
+    <section className="bg-[var(--c-cream)] py-32">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal><Eyebrow color="text-cyan-600">Legal Structure · How We Operate</Eyebrow></Reveal>
         <Reveal delay={100}>
@@ -1875,16 +2251,16 @@ const Investment = () => {
   ];
   return (
     <section id="invest" className="relative bg-[#0A0E1A] text-white py-32 overflow-hidden">
-      <div className="absolute -top-1/4 -right-1/4 w-[80vh] h-[80vh] rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-1/4 -left-1/4 w-[60vh] h-[60vh] rounded-full bg-cyan-700/20 blur-3xl pointer-events-none" />
-      <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-6">
-        <Reveal><Eyebrow color="text-cyan-300">Investment</Eyebrow></Reveal>
+      <MeshBackground variant="dark" />
+      <div className="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
+      <div className="grain pointer-events-none" />
+      <SectionSpotlight className="relative max-w-7xl mx-auto px-6 py-2">
+        <Reveal><Eyebrow color="text-[#F0A573]">Investment</Eyebrow></Reveal>
         <div className="grid md:grid-cols-12 gap-12 mt-12">
           <div className="md:col-span-6">
             <Reveal delay={100}>
               <div className="font-display text-2xl md:text-3xl font-light text-neutral-400 mb-2">Seed Round</div>
-              <h2 className="font-display font-extrabold text-7xl md:text-[10rem] leading-[0.85]">$2.5M</h2>
+              <h2 className="font-display font-extrabold text-7xl md:text-[10rem] leading-[0.85]"><span className="text-gradient">$2.5M</span></h2>
             </Reveal>
             <Reveal delay={300}>
               <p className="mt-8 text-xl text-cyan-300 leading-snug max-w-xl">
@@ -1944,12 +2320,14 @@ const Investment = () => {
                 Окно — 1 сентября 2026. Запустим MVP сейчас → войдём в РФ инфраструктурой, не приложением.
               </div>
             </div>
-            <a href="mailto:invest@mervey.kg" className="flex-shrink-0 inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black transition">
-              Get in touch <ArrowRight className="w-4 h-4" />
-            </a>
+            <Magnetic strength={0.3}>
+              <a href="mailto:invest@mervey.kg" className="flex-shrink-0 inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black transition">
+                Get in touch <ArrowRight className="w-4 h-4" />
+              </a>
+            </Magnetic>
           </div>
         </Reveal>
-      </div>
+      </SectionSpotlight>
     </section>
   );
 };
@@ -1986,8 +2364,9 @@ const Footer = () => (
 // ──────────────────────────────────────────────────────────────
 export default function App() {
   return (
-    <div className="min-h-screen bg-white font-body text-neutral-900">
+    <div className="min-h-screen bg-[var(--c-cream)] font-body text-neutral-900">
       <SiteStyles />
+      <CustomCursor />
       <Nav />
       <Hero />
       <Vision />
